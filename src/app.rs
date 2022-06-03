@@ -49,15 +49,26 @@ impl App {
     }
 
     pub fn make_move(&mut self) {
-        if !self.game.game_ended() {
+        if !self.game.is_ended {
             self.game.make_move(self.get_active_coordinate())
+            
         }
+        if self.game.game_ended() {
+            self.game.is_ended = true;
+        }
+    }
+
+    pub fn reset_game(&mut self) {
+        self.game.reset_game()
     }
 
     pub fn on_key(&mut self, c: char) {
         match c {
             'q' => {
                 self.should_quit = true;
+            },
+            'r' => {
+                self.reset_game()
             }
             _ => {}
         }

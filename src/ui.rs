@@ -133,7 +133,7 @@ fn draw_board<B: Backend>(f: &mut Frame<B>, player_chunk: Rect, title: &str, app
                         if cell.is_active(app.get_active_coordinate()) {
                             Color::Yellow
                         } else {
-                            Color::Blue
+                            Color::White
                         },
                     ))
                     .border_type(BorderType::Rounded),

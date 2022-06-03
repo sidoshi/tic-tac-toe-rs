@@ -7,6 +7,7 @@ pub struct Game {
     board: Board,
     turn: Piece,
     moves: u8,
+    is_ended: bool
 }
 
 impl Game {
@@ -15,19 +16,24 @@ impl Game {
             board: Board::new(),
             turn: Piece::X,
             moves: 0,
+            is_ended: false,
         }
     }
 
     pub fn start(&mut self) {
         loop {
             self.board.display();
-            if self.game_ended() {
-                return;
-            }
             println!("Turn: {}", self.turn.get_display_str());
             let point = Game::get_point_input();
             self.make_move(point);
         }
+    }
+
+    pub fn reset_game(&mut self) {
+        self.board = Board::new();
+        self.turn = Piece::X;
+        self.moves = 0;
+        self.is_ended = false;
     }
 
     fn check_winner(&self) -> Option<Piece> {
@@ -58,13 +64,19 @@ impl Game {
         self.board.get_board_cell_value(point)
     }
 
-    pub fn game_ended(&self) -> bool {
+    pub fn game_ended(&mut self) -> bool {
+        if self.is_ended {
+            return true
+        }
+            
         if let Some(p) = self.check_winner() {
-            println!("Player {} won!", p.get_display_str());
+            self.is_ended = true;
+            println!("Player {} won! {}", p.get_display_str(), '\u{1F378}');
             return true;
         }
 
         if self.moves == 9 {
+            self.is_ended = true;
             println!("Tie!");
             return true;
         }
@@ -96,6 +108,7 @@ impl Game {
             self.board.make_move(point, self.turn);
             self.change_turn();
             self.moves = self.moves + 1;
+            self.game_ended();
         } else {
             println!("Invalid move");
         }
