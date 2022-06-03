@@ -19,6 +19,8 @@ pub enum BoardCell {
     Filled(Piece),
 }
 
+pub type Coordinate = (usize, usize);
+
 impl BoardCell {
     fn get_display_str(&self) -> &'static str {
         match self {
@@ -49,15 +51,19 @@ impl Board {
         println!("-----------");
     }
 
-    pub fn make_move(&mut self, point: (usize, usize), piece: Piece) {
+    pub fn make_move(&mut self, point: Coordinate, piece: Piece) {
         self.board[point.0][point.1] = BoardCell::Filled(piece);
     }
 
-    pub fn is_empty(&self, point: (usize, usize)) -> bool {
+    pub fn is_empty(&self, point: Coordinate) -> bool {
         self.board[point.0][point.1] == BoardCell::Empty
     }
 
-    pub fn get_piece_at(&self, point: (usize, usize)) -> Option<Piece> {
+    pub fn get_board_cell_value(&self, point: Coordinate) -> &str {
+        self.board[point.0][point.1].get_display_str()
+    }
+
+    pub fn get_piece_at(&self, point: Coordinate) -> Option<Piece> {
         if let BoardCell::Filled(piece) = self.board[point.0][point.1] {
             return Some(piece);
         }

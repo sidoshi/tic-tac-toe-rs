@@ -1,9 +1,16 @@
+mod app;
 mod board;
+mod cell;
+mod crossterm;
 mod game;
+mod ui;
 
-use crate::game::Game;
+use std::error::Error;
+use std::time::Duration;
 
-fn main() {
-    let mut game = Game::new();
-    game.start();
+use crate::crossterm::run;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    run(Duration::from_millis(32))?;
+    Ok(())
 }

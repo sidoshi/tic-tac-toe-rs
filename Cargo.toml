@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 regex = "1.5"
+
+tui = "0.18.0"
+crossterm = "0.23"

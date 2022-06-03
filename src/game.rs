@@ -1,7 +1,7 @@
 use regex::Regex;
 use std::io;
 
-use crate::board::{Board, Piece};
+use crate::board::{Board, BoardCell, Coordinate, Piece};
 
 pub struct Game {
     board: Board,
@@ -54,7 +54,11 @@ impl Game {
         None
     }
 
-    fn game_ended(&self) -> bool {
+    pub fn get_cell_value(&self, point: Coordinate) -> &str {
+        self.board.get_board_cell_value(point)
+    }
+
+    pub fn game_ended(&self) -> bool {
         if let Some(p) = self.check_winner() {
             println!("Player {} won!", p.get_display_str());
             return true;
@@ -68,7 +72,7 @@ impl Game {
         false
     }
 
-    fn get_point_input() -> (usize, usize) {
+    fn get_point_input() -> Coordinate {
         loop {
             let mut point = String::new();
             io::stdin()
@@ -86,7 +90,7 @@ impl Game {
         }
     }
 
-    fn make_move(&mut self, point: (usize, usize)) {
+    pub fn make_move(&mut self, point: Coordinate) {
         let valid = self.board.is_empty(point);
         if valid {
             self.board.make_move(point, self.turn);
